@@ -3,7 +3,7 @@ Admin
 bash <(curl -s "https://raw.githubusercontent.com/checkinvest88/proxy2/main/createproxy.sh")
 Cách tạo proxy từ server Centos.
 
-I. Cài đặt Squid
+# I. Cài đặt Squid
 
 Update :
 
@@ -13,17 +13,17 @@ Cài Squid :
 
 yum -y install squid
 
-Tạo file backup :
+# Tạo file backup :
 
 cp /etc/squid/squid.conf /etc/squid/squid.conf.default
 
-Sửa file :
+# Sửa file :
 
 Vi /etc/squid/squid.conf
 
-Tìm dòng
+# Tìm dòng
 
-# and finally deny all other access to this proxy
+and finally deny all other access to this proxy
 
 http_access deny all
 
@@ -31,15 +31,15 @@ Sửa thành
 
 http_access allow all
 
-Thay thế port mà bạn muốn sử dụng :
+# Thay thế port mà bạn muốn sử dụng :
 
-# Squid normally listens to port 3128
+Squid normally listens to port 3128
 
 http_port 16861
 
-Nếu muốn chặn chỉ mở port cho 1 IP thì thêm dòng sau :
+# Nếu muốn chặn chỉ mở port cho 1 IP thì thêm dòng sau :
 
-#Your Personal IP to allow without authentication (Remove this line and one below to disable this)
+Your Personal IP to allow without authentication (Remove this line and one below to disable this)
 
 acl myclients src ###.##.##.###
 
@@ -117,7 +117,7 @@ service squid restart
 
 Thấy 2 dòng OK là xong.
 
-II. Mở port .
+# II. Mở port .
 
 Chạy trên console :
 
