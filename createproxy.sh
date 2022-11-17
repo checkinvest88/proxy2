@@ -54,14 +54,28 @@ gen_proxy_file_for_user() {
 $(awk -F "/" '{print $3 ":" $4 ":" $1 ":" $2 }' ${WORKDATA})
 EOF
 }
+gen_proxy_file_for_no_user() {
+    cat >proxy_nouser.txt <<EOF
+$(awk -F "/" '{print $3 ":" $4 }' ${WORKDATA})
+EOF
+}
 
 upload_proxy() {
-    cd $WORKDIR
     local PASS=$(random)
     zip --password $PASS proxy.zip proxy.txt
-    URL=$(curl -F "file=@proxy.zip" https://file.io)
+    URL=$(curl -s --upload-file proxy.zip https://transfer.sh/proxy.zip)
 
     echo "Proxy is ready! Format IP:PORT:LOGIN:PASS"
+    echo "Download zip archive from: ${URL}"
+    echo "Password: ${PASS}"
+
+}
+upload_proxy2() {
+    local PASS=$(random)
+    zip --password $PASS proxy_nouser.zip proxy_nouser.txt
+    URL=$(curl -s --upload-file proxy.zip https://transfer.sh/proxy.zip)
+
+    echo "Proxy is ready! Format IP:PORT"
     echo "Download zip archive from: ${URL}"
     echo "Password: ${PASS}"
 
@@ -106,6 +120,9 @@ gen_iptables >$WORKDIR/boot_iptables.sh
 gen_ifconfig >$WORKDIR/boot_ifconfig.sh
 chmod +x boot_*.sh /etc/rc.local
 
+
+
+
 gen_3proxy >/usr/local/etc/3proxy/3proxy.cfg
 
 cat >>/etc/rc.local <<EOF
@@ -116,7 +133,7 @@ ulimit -n 10048
 EOF
 
 bash /etc/rc.local
-
+gen_proxy_file_for_no_user
 gen_proxy_file_for_user
 
 upload_proxy
